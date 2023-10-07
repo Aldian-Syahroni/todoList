@@ -46,6 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
     addTodo();
   });
+
+  if (isStorageExist()) {
+    loadDataFormStroage();
+  }
 });
 
 document.addEventListener(RENDER_EVENT, function () {
@@ -165,4 +169,17 @@ function saveData() {
     localStorage.setItem(STORAGE_KEY, parsed);
     document.dispatchEvent(new Event(SAVED_EVENT));
   }
+}
+
+function loadDataFormStroage() {
+  const serializedData = localStorage.getItem(STORAGE_KEY);
+  let data = JSON.parse(serializedData);
+
+  if (data !== null) {
+    for (const todo of data) {
+      todos.push(todo);
+    }
+  }
+
+  document.dispatchEvent(new Event(RENDER_EVENT));
 }
